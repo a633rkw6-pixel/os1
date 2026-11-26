@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Microphone & Audio Routing -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Virtual Phone & Guest App Capabilities -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
+    <application
+        android:name=".VPhoneApplication"
+        android:allowBackup="false"
+        android:extractNativeLibs="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="VPhoneOS + ClearVoice"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Material.NoActionBar"
+        android:usesCleartextTraffic="true">
+
+        <!-- Main Host Launcher (Virtual Phone + ClearVoice Virtual Mic Hub) -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Host Foreground Service: Real Phone Mic -> ClearVoice DSP -> Virtual Mic Bus -->
+        <service
+            android:name=".mic.VirtualMicService"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
+        <!-- Built-in Virtual Mic Verification App running inside :vp0 -->
+        <activity
+            android:name=".stub.VirtualMicTestActivity"
+            android:exported="false"
+            android:label="Virtual Mic Tester"
+            android:process=":vp0" />
+
+        <!-- Isolated Multi-Process Stub Slots for Virtual Apps -->
+        <activity
+            android:name=".stub.StubActivityP0"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation|screenLayout|smallestScreenSize"
+            android:exported="false"
+            android:launchMode="standard"
+            android:process=":vp0" />
+
+        <activity
+            android:name=".stub.StubActivityP1"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation|screenLayout|smallestScreenSize"
+            android:exported="false"
+            android:launchMode="standard"
+            android:process=":vp1" />
+
+        <activity
+            android:name=".stub.StubActivityP2"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation|screenLayout|smallestScreenSize"
+            android:exported="false"
+            android:launchMode="standard"
+            android:process=":vp2" />
+
+        <activity
+            android:name=".stub.StubActivityP3"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation|screenLayout|smallestScreenSize"
+            android:exported="false"
+            android:launchMode="standard"
+            android:process=":vp3" />
+
+    </application>
+</manifest>

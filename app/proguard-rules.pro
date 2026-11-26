@@ -1,0 +1,3 @@
+-keep class com.vphone.os.core.VirtualNativeBridge { *; }
+-keep class com.vphone.os.stub.** { *; }
+-keep class com.bytedance.shadowhook.** { *; }
